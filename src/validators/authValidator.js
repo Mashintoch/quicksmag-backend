@@ -38,12 +38,6 @@ export const registerSchema = Joi.object({
     "any.required": "Password is required",
   }),
 
-  // confirmPassword: Joi.string().valid(Joi.ref("password")).required().messages({
-  //   "any.only": "Passwords do not match",
-  //   "string.empty": "Confirm password is required",
-  //   "any.required": "Confirm password is required",
-  // }),
-
   firstname: Joi.string().min(2).max(50).required().trim().messages({
     "string.min": "First name must be at least 2 characters long",
     "string.max": "First name cannot exceed 50 characters",

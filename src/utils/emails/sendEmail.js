@@ -64,7 +64,7 @@ class EmailService {
   async sendVerificationEmail(email, code) {
     const subject = "Verify Your Email Address";
     const text = `
-      Welcome to Pozse!
+      Welcome to QuickSmag!
       
       Please use the following code to verify your email address: ${code}
       
@@ -74,7 +74,7 @@ class EmailService {
     `;
     const html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-        <h2 style="color: #333;">Welcome to Pozse!</h2>
+        <h2 style="color: #333;">Welcome to QuickSmag!</h2>
         <p>Please use the following code to verify your email address:</p>
         <div style="background-color: #f5f5f5; padding: 15px; margin: 20px 0; text-align: center; border-radius: 5px;">
           <strong style="font-size: 24px; color: #333;">${code}</strong>
@@ -114,7 +114,7 @@ class EmailService {
   }
 
   async sendWelcomeEmail(email, firstName) {
-    const subject = "Welcome to Our Pozse!";
+    const subject = "Welcome to QuickSmag!";
     const text = `
       Hello ${firstName},
       
@@ -129,9 +129,9 @@ class EmailService {
     `;
     const html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-        <h2 style="color: #333;">Welcome to Our Pozse!</h2>
+        <h2 style="color: #333;">Welcome to Our QuickSmag!</h2>
         <p>Hello ${firstName},</p>
-        <p>Thank you for joining our Pozse! We're excited to have you as a member.</p>
+        <p>Thank you for joining our QuickSmag! We're excited to have you as a member.</p>
         <p>Your account has been successfully created and activated.</p>
         <p>If you have any questions or need assistance, please don't hesitate to contact our support team.</p>
         <p>Best regards,<br>The Team</p>

@@ -1,13 +1,10 @@
+/* eslint-disable no-console */
 import passport from "passport";
 import { Strategy as FacebookStrategy } from "passport-facebook";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-// import generalData from "../../data/generalData";
 
-// const { domain } = generalData;
-
-// Function to generate callback URLs
 const callBackUrl = (strategy) => {
-  const value = `https://pozse-server-production-ae41.up.railway.app/api/v1/auth/${strategy}/callback`;
+  const value = `http://192.168.32.1:3002/api/v1/auth/${strategy}/callback`;
   return value;
 };
 
@@ -26,17 +23,15 @@ const providers = {
   },
 };
 
-// Get available providers
 const getAvailableProviders = () => {
   const availableProviders = Object.entries(providers)
-    .filter(([, config]) => config.clientID && config.clientSecret) // Ignore the first element
-    .map(([provider]) => provider); // Extract provider names
+    .filter(([, config]) => config.clientID && config.clientSecret)
+    .map(([provider]) => provider);
   return availableProviders;
 };
 
-// Passport configuration function
+
 const usePassport = () => {
-  // Google strategy
   if (providers.google.clientID && providers.google.clientSecret) {
     passport.use(
       new GoogleStrategy(
@@ -62,7 +57,6 @@ const usePassport = () => {
     console.warn("Google credentials are missing.");
   }
 
-  // Facebook strategy
   if (providers.facebook.clientID && providers.facebook.clientSecret) {
     passport.use(
       new FacebookStrategy(
@@ -95,5 +89,4 @@ const usePassport = () => {
   return passport;
 };
 
-// Export functions and providers
 export { getAvailableProviders, usePassport, providers };
