@@ -1,0 +1,6 @@
+{
+    "version": 2,
+    "name": "quicksmag-server",
+    "builds": [{ "src": "src/bin/www/server.js", "use": "@vercel/node" }],
+    "routes": [{ "src": "/(.*)", "dest": "/src/bin/www/server.js" }]
+}
