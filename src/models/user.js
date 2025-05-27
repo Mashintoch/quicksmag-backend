@@ -80,11 +80,7 @@ const userSchema = new Schema(
     },
     category: {
       type: [String],
-      enum: [
-        "vendor",
-        "resturant",
-        "rider",
-      ],
+      enum: ["vendor", "resturant", "rider"],
     },
     blockedUsers: [
       {
@@ -229,6 +225,22 @@ const userSchema = new Schema(
       type: Number,
       default: 0,
     },
+    loginHistory: [
+      {
+        ip: {
+          type: String,
+          required: true,
+        },
+        userAgent: {
+          type: String,
+          required: true,
+        },
+        loginTime: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

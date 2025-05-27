@@ -13,6 +13,7 @@ import emailService from "../utils/emails/sendEmail";
 import referralService from "./referralServices";
 import HttpError from "../helpers/httpError";
 import config from "../configs/env";
+import getClientInfo from "../helpers/getUserLoginHistory";
 
 class AuthService {
   async register(userData, referralCode) {
@@ -79,7 +80,7 @@ class AuthService {
       const refreshToken = jwt.sign(
         {
           id: user._id.toString(),
-          type: "refresh"
+          type: "refresh",
         },
         config.auth.jwtSecret,
         { expiresIn: "30d" }
@@ -104,7 +105,7 @@ class AuthService {
     }
   }
 
-  async login(email, phone, password) {
+  async login(email, phone, password, request) {
     try {
       const user = await User.findOne({
         $or: [{ email }, { phoneNumber: phone }],
@@ -140,6 +141,14 @@ class AuthService {
         );
       }
 
+      const { ip, userAgent } = getClientInfo(request);
+
+      user.loginHistory.push({
+        ip,
+        userAgent,
+        loginTime: new Date(),
+      });
+
       const accessToken = jwt.sign(
         {
           id: user._id.toString(),
@@ -153,7 +162,7 @@ class AuthService {
       const refreshToken = jwt.sign(
         {
           id: user._id.toString(),
-          type: "refresh"
+          type: "refresh",
         },
         config.auth.jwtSecret,
         { expiresIn: "30d" }
@@ -164,13 +173,13 @@ class AuthService {
         token: refreshToken,
         expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
       }).save();
-      
+
       const userResponse = this.sanitizeUser(user);
 
-      return { 
-        user: userResponse, 
+      return {
+        user: userResponse,
         accessToken,
-        refreshToken 
+        refreshToken,
       };
     } catch (error) {
       if (error instanceof HttpError) throw error;
@@ -204,7 +213,7 @@ class AuthService {
       const storedToken = await RefreshToken.findOne({
         token: refreshToken,
         isRevoked: false,
-        expiresAt: { $gt: new Date() }
+        expiresAt: { $gt: new Date() },
       });
 
       if (!storedToken) {
@@ -216,10 +225,7 @@ class AuthService {
 
       const user = await User.findById(decoded.id);
       if (!user) {
-        throw new HttpError(
-          "User not found",
-          StatusCodes.NOT_FOUND
-        );
+        throw new HttpError("User not found", StatusCodes.NOT_FOUND);
       }
 
       if (user.status === "SUSPENDED" || user.status === "DEACTIVATED") {
@@ -258,10 +264,7 @@ class AuthService {
           { isRevoked: true }
         );
       } else {
-        await RefreshToken.updateMany(
-          { userId },
-          { isRevoked: true }
-        );
+        await RefreshToken.updateMany({ userId }, { isRevoked: true });
       }
 
       return { success: true, message: "Logged out successfully" };
