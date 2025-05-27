@@ -6,7 +6,7 @@ const createAdminUser = Joi.object().keys({
   lastname: Joi.string().min(3).trim().max(255).required(),
   email: Joi.string().min(10).trim().max(255).required().email(),
   phoneNumber: Joi.string().max(14).required(),
-  // role: Joi.string().min(10).required(),
+  role: Joi.string().min(10).required(),
 });
 
 const emailConfirmation = Joi.object().keys({
@@ -123,7 +123,7 @@ const signUp = Joi.object().keys({
   email: Joi.string().email().required(),
   password: Joi.string().min(8).max(255).trim(),
   role: Joi.string(),
-  isVolunteer: Joi.boolean(),
+  isRider: Joi.boolean(),
   isVendor: Joi.boolean(),
 });
 
@@ -281,7 +281,7 @@ export default {
   "/admin/user/new": createAdminUser,
   "/admin/user/update": updateAdminUser,
   "/auth/login": signIn,
-  "/auth/signup": signUp,
+  "/auth/register": signUp,
   "/auth/resend-email-verification-link": resendEmailVerificationLink,
   "/auth/email/confirmation": emailConfirmation,
   "/auth/activate-admin": activateAdminAccount,

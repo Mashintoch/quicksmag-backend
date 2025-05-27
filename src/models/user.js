@@ -241,6 +241,14 @@ const userSchema = new Schema(
         },
       },
     ],
+    isVendor: {
+      type: Boolean,
+      default: false,
+    },
+    isRider: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
